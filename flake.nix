@@ -10,12 +10,6 @@
       # Abstract the platform specification for easier readability and maintenance
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       pythonEnv = pkgs.python3.withPackages (ps: [ ps.numpy ]);
-      libMediaPipe = pkgs.fetchFromGitHub {
-        owner = "cpvrlab";
-        repo = "libmediapipe";
-        rev = "c0b717408f8747f26f4b10cd78d0753c383b4a8c";
-        sha256 = "sha256-iltjOCJ9KXkA8jdonZYOa/cV/gbq7eXLavK6RPYFEog=";
-      };
     in
     {
       packages.x86_64-linux.default = pkgs.buildBazelPackage {
@@ -46,7 +40,7 @@
 
         postPatch = ''
           rm -f .bazelversion
-          cp -r ${libMediaPipe}/c mediapipe/c
+          cp -r ${self}/c mediapipe/c
           
           LINE=$(grep -n linux_opencv WORKSPACE | cut -d : -f1)
           LINE=$(($LINE + 2))
